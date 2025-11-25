@@ -47,7 +47,6 @@ def main():
     try:
         create_directories()
 
-        # Создаем пустой датафрейм
         df = pd.DataFrame()
 
         # Загрузка из Excel
@@ -74,9 +73,8 @@ def main():
 
         # Обработка данных
         validate_data(df)
-        df = clean_data(df)  # Важно сохранить результат очистки
+        df = clean_data(df)
 
-        # Инициализация результатов анализа
         analysis_results = {}
 
         # Обучаем ML-модель
@@ -86,20 +84,17 @@ def main():
             model, metrics = train_regression_model(df, 'salary')
 
             if model:
-                # Сохраняем модель
                 save_model(
                     model,
                     os.path.join(PATHS['models'], 'salary_model.pkl')
                 )
 
-                # Добавляем метрики в анализ
                 metrics_dict = {
                     'MSE': metrics['mse'],
                     'R2': metrics['r2']
                 }
                 analysis_results['model_metrics'] = metrics_dict
 
-        # Анализ и отчетность с обработкой ошибок
         try:
             analysis_results = analyze_data(df)
 
@@ -148,13 +143,10 @@ def job():
 
 if __name__ == "__main__":
     try:
-        # Настройка расписания
         schedule.every().day.at("08:00").do(job)
 
-        # Запуск основного процесса сразу при старте
         main()
 
-        # Бесконечный цикл для проверки расписания
         while True:
             schedule.run_pending()
             time.sleep(1)
