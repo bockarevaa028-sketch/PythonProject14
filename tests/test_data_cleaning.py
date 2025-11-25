@@ -5,30 +5,23 @@ from data_loader import clean_data
 
 
 def test_clean_data():
-    # Создаем тестовый датафрейм
     df = pd.DataFrame({
         'col1': [1, 2, None, 4],
         'col2': ['a', 'b', None, 'd'],
         'date': ['2023-01-01', '2023-01-02', None, '2023-01-04']
     })
 
-    # Очищаем данные
     cleaned_df = clean_data(df)
 
-    # Проверяем отсутствие пропусков
     assert cleaned_df.isnull().sum().sum() == 0
 
-    # Проверяем наличие всех преобразованных колонок
     expected_columns = ['col1', 'col2_b', 'col2_d']
 
-    # Получаем уникальные даты из очищенного датафрейма
     date_columns = [col for col in cleaned_df.columns if col.startswith('date_')]
 
-    # Проверяем, что все ожидаемые колонки присутствуют
     for col in expected_columns:
         assert col in cleaned_df.columns
 
-    # Проверяем типы данных
     assert pd.api.types.is_numeric_dtype(cleaned_df['col1'])
     assert pd.api.types.is_bool_dtype(cleaned_df['col2_b'])
     assert pd.api.types.is_bool_dtype(cleaned_df['col2_d'])
@@ -36,19 +29,16 @@ def test_clean_data():
     for date_col in date_columns:
         assert pd.api.types.is_bool_dtype(cleaned_df[date_col])
 
-    # Проверяем количество строк
     assert len(cleaned_df) == 4
 
 
 def test_clean_data_empty():
-    # Тест с пустыми данными
     df_empty = pd.DataFrame()
     cleaned_df = clean_data(df_empty)
     assert cleaned_df.empty
 
 
 def test_clean_data_single_row():
-    # Тест с одной строкой
     df_single = pd.DataFrame({
         'col1': [1],
         'col2': ['a'],
