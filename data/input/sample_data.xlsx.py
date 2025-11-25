@@ -12,7 +12,6 @@ class ExcelHandler:
         self.dataframe = None
 
     def read_excel(self):
-        """Чтение Excel файла"""
         try:
             self.dataframe = pd.read_excel(self.file_path)
             return self.dataframe
@@ -21,7 +20,6 @@ class ExcelHandler:
             return None
 
     def write_excel(self, df, sheet_name='Sheet1'):
-        """Запись DataFrame в Excel"""
         try:
             with pd.ExcelWriter(self.file_path, engine='openpyxl') as writer:
                 df.to_excel(writer, sheet_name=sheet_name, index=False)
@@ -29,14 +27,12 @@ class ExcelHandler:
             print(f"Ошибка записи в файл: {e}")
 
     def create_empty_excel(self):
-        """Создание пустого Excel файла"""
         wb = Workbook()
         ws = wb.active
         ws.title = "Лист1"
         wb.save(self.file_path)
 
     def append_data(self, df, sheet_name='Sheet1'):
-        """Добавление данных в существующий файл"""
         try:
             writer = pd.ExcelWriter(self.file_path, engine='openpyxl', mode='a')
             df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=writer.sheets[sheet_name].max_row)
@@ -45,7 +41,6 @@ class ExcelHandler:
             print(f"Ошибка добавления данных: {e}")
 
     def get_sheet_names(self):
-        """Получение списка листов в файле"""
         try:
             self.workbook = openpyxl.load_workbook(self.file_path)
             return self.workbook.sheetnames
@@ -54,7 +49,6 @@ class ExcelHandler:
             return []
 
     def delete_sheet(self, sheet_name):
-        """Удаление листа"""
         try:
             wb = openpyxl.load_workbook(self.file_path)
             if sheet_name in wb.sheetnames:
@@ -64,14 +58,13 @@ class ExcelHandler:
             print(f"Ошибка удаления листа: {e}")
 
 
-# Пример использования
 if __name__ == "__main__":
     excel_handler = ExcelHandler("data.xlsx")
 
-    # Создание пустого файла
+
     excel_handler.create_empty_excel()
 
-    # Создание тестовых данных
+
     data = {
         'Имя': ['Иван', 'Петр', 'Анна'],
         'Возраст': [25, 30, 22],
@@ -80,9 +73,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(data)
 
-    # Запись данных
     excel_handler.write_excel(df)
 
-    # Чтение данных
     read_df = excel_handler.read_excel()
     print(read_df)
