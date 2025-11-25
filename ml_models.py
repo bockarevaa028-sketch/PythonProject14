@@ -12,30 +12,24 @@ from loguru import logger
 
 def train_regression_model(df, target_column):
     try:
-        # Проверяем наличие целевой колонки
         if target_column not in df.columns:
             raise ValueError(f"Целевая колонка {target_column} не найдена")
 
-        # Проверяем, что есть хотя бы один признак
         features = df.columns.difference([target_column])
         if len(features) == 0:
             raise ValueError("Нет признаков для обучения модели")
 
-        # Проверяем, что все признаки числовые
         non_numeric_features = df.select_dtypes(exclude=['float64', 'int64']).columns
         if not non_numeric_features.empty:
             raise ValueError(f"Нечисловые признаки: {list(non_numeric_features)}")
 
-        # Разделяем данные
         X = df.drop(columns=[target_column])
         y = df[target_column]
 
-        # Разбиваем на train/test
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
         )
 
-        # Создаем пайплайн
         numeric_features = X.select_dtypes(include=['float64', 'int64']).columns
         numeric_transformer = StandardScaler()
 
@@ -50,13 +44,10 @@ def train_regression_model(df, target_column):
             ('regressor', LinearRegression())
         ])
 
-        # Обучаем модель
         model.fit(X_train, y_train)
 
-        # Прогнозируем
         y_pred = model.predict(X_test)
 
-        # Метрики
         metrics = {
             'mse': mean_squared_error(y_test, y_pred),
             'r2': r2_score(y_test, y_pred)
@@ -68,7 +59,7 @@ def train_regression_model(df, target_column):
 
     except Exception as e:
         logger.error(f"Ошибка при обучении модели: {str(e)}")
-        raise  # Перебрасываем исключение
+        raise  
 
 
 def evaluate_model(model, X_test, y_test):
