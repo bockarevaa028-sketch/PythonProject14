@@ -2,7 +2,7 @@
 
 PATHS = {
     'data_input': 'data/input/',
-    'data_output': 'data/output/',  # Убедитесь, что этот путь существует
+    'data_output': 'data/output/', 
     'reports_documents': 'reports/documents/',
     'reports_visualizations': 'reports/visualizations/',
     'models': 'models/'
@@ -22,17 +22,17 @@ DB_CONFIG = {
 
 # Конфигурация API
 API_CONFIG = {
-    'base_url': 'https://jsonplaceholder.typicode.com',  # Публичный тестовый API
+    'base_url': 'https://jsonplaceholder.typicode.com',  
     'endpoints': {
-        'data': '/users',  # Для получения данных о пользователях
-        'posts': '/posts',  # Для получения постов
+        'data': '/users', 
+        'posts': '/posts',  
         'comments': '/comments'
     },
     'headers': {
-        'Content-Type': 'application/json'  # Для этого API токен не требуется
+        'Content-Type': 'application/json'  
     },
     'params': {
-        'limit': 10,  # Ограничение количества записей
+        'limit': 10, 
         'offset': 0
     }
 }
