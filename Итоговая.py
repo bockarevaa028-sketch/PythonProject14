@@ -3,14 +3,14 @@
 import os
 import sys
 
-sys.path.append(os.path.abspath('.'))  # Добавляем текущую директорию в путь поиска
+sys.path.append(os.path.abspath('.'))  
 
 from loguru import logger
 import pandas as pd
 import os
 
 try:
-    import data_loader  # Пытаемся импортировать модуль
+    import data_loader 
     from data_loader import load_csv, validate_data
 except ModuleNotFoundError:
     print("Ошибка: файл data_loader.py не найден в текущей директории")
@@ -46,22 +46,17 @@ def create_sample_csv():
 def main():
     logger.info("Запуск процесса обработки данных")
 
-    # Создаем необходимые директории
     create_directories()
 
-    # Создаем тестовый файл
     create_sample_csv()
 
     try:
-        # Загружаем данные из созданного файла
         df = load_csv('data/input/sample_data.csv')
 
         if df is not None:
-            # Валидируем данные
             df = validate_data(df)
             logger.info("Данные загружены и проверены")
 
-            # Дальнейшая обработка
             logger.info("Проверка данных")
             logger.info("Очистка данных")
             logger.info("Анализ данных")
@@ -86,7 +81,6 @@ from data_loader import (
 def main():
     logger.info("Запуск процесса обработки данных")
 
-    # Обновленный URL для подключения
     db_url = "postgresql://username:password@localhost:5432/your_db?client_encoding=utf8"
 
     # Загрузка из SQL
@@ -136,22 +130,17 @@ def create_sample_csv():
 def main():
     logger.info("Запуск процесса обработки данных")
 
-    # Создаем необходимые директории
     create_directories()
 
-    # Создаем тестовый файл
     create_sample_csv()
 
     try:
-        # Загружаем данные из созданного файла
         df = load_csv('data/input/sample_data.csv')
 
         if df is not None:
-            # Валидируем данные
             df = validate_data(df)
             logger.info("Данные загружены и проверены")
 
-            # Дальнейшая обработка
             logger.info("Проверка данных")
             logger.info("Очистка данных")
             logger.info("Анализ данных")
