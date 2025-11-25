@@ -10,24 +10,20 @@ from loguru import logger
 
 def send_notification(subject, message, recipient, files=None):
     try:
-        # Настройки SMTP (замените на ваши данные)
         SMTP_CONFIG = {
             'server': 'smtp.your-provider.com',
             'port': 587,
             'sender': 'your-email@domain.com',
-            'password': 'your-app-password'  # Используйте пароль приложения
+            'password': 'your-app-password' 
         }
 
-        # Создание сообщения
         msg = MIMEMultipart()
         msg['From'] = SMTP_CONFIG['sender']
         msg['To'] = recipient
         msg['Subject'] = subject
 
-        # Добавление текста сообщения
         msg.attach(MIMEText(message, 'plain'))
 
-        # Добавление вложений, если они есть
         if files:
             for file_path in files:
                 if os.path.exists(file_path):
@@ -43,7 +39,6 @@ def send_notification(subject, message, recipient, files=None):
                 else:
                     logger.warning(f"Файл не найден: {file_path}")
 
-        # Отправка письма
         with smtplib.SMTP(
             SMTP_CONFIG['server'],
             SMTP_CONFIG['port']
