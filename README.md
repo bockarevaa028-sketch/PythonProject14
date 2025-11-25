@@ -99,4 +99,4 @@ Excel отчеты с основными метриками
 Контактная информация
 Email: bockarevaa028@gmail.com
 
-GitHub: [ссылка на репозиторий]
+GitHub: https://github.com/bockarevaa028-sketch/PythonProject14.git
