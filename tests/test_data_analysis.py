@@ -34,53 +34,47 @@ def test_calculate_statistics():
 
 def test_detect_outliers_iqr():
     df = pd.DataFrame({
-        'values': [1, 2, 3, 4, 100]  # 100 - явный выброс
+        'values': [1, 2, 3, 4, 100] 
     })
 
     outliers = detect_outliers_iqr(df)
-    assert len(outliers['values']) == 1  # Ожидаем один выброс
+    assert len(outliers['values']) == 1 
     assert outliers['values']['values'].iloc[0] == 100
 
 
 def test_detect_outliers_zscore():
-    # Создаем датафрейм с большим количеством значений и явным выбросом
     df = pd.DataFrame({
-        'values': [1, 2, 3, 4, 5] * 10 + [10000]  # Много малых значений и один большой выброс
+        'values': [1, 2, 3, 4, 5] * 10 + [10000] 
     })
 
     mean = df['values'].mean()
     std = df['values'].std()
     print(f"Среднее: {mean}, Стандартное отклонение: {std}")
 
-    # Проверяем разные пороги для Z-score
     for threshold in [1, 1.5, 2, 2.5, 3]:
         outliers = detect_outliers_zscore(df, threshold=threshold)
-        assert len(outliers['values']) >= 1  # Должен обнаружиться хотя бы один выброс
+        assert len(outliers['values']) >= 1 
 
-        # Проверяем, что значение 10000 является выбросом
         if threshold <= 3:
             assert outliers['values']['values'].iloc[0] == 10000
             z_score_value = outliers['values']['z_score'].iloc[0]
             assert z_score_value > threshold
             print(f"При пороге {threshold} Z-score = {z_score_value}")
 
-    # Проверяем случай с нулевым std
     df_zero_std = pd.DataFrame({
         'values': [5, 5, 5, 5, 5]
     })
     outliers = detect_outliers_zscore(df_zero_std)
     assert outliers['values'].empty
 
-    # Добавляем дополнительный тест с меньшими значениями
     df_small = pd.DataFrame({
-        'values': [1, 2, 3, 4, 10]  # 10 - меньший выброс
+        'values': [1, 2, 3, 4, 10] 
     })
     outliers_small = detect_outliers_zscore(df_small, threshold=1)
     assert len(outliers_small['values']) >= 1
 
-    # Добавляем тест с отрицательным выбросом
     df_negative = pd.DataFrame({
-        'values': [-1000] + list(range(1, 101))  # -1000 - отрицательный выброс
+        'values': [-1000] + list(range(1, 101))  
     })
     outliers_negative = detect_outliers_zscore(df_negative, threshold=2)
     assert len(outliers_negative['values']) >= 1
